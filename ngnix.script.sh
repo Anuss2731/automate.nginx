@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #update the system
-#sudo apt-get update
+sudo apt-get update
 
 #install nginx
 echo "..................step1: Checking if NGINX is installed...................."
