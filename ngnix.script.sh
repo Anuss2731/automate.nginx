@@ -98,7 +98,7 @@ sudo chmod 777 $path
 read -p "WHICH PORT U WANT TO RUN WEBSITE  HTTP=80:" port
 read -p "DO u have register domain name Y/N:" server
 case $server in
-        n)result="$ip_add";;
+        n)result="_";;
         y)
                 read -p "give u registor domain name:" domain
                 result="$domain";;
@@ -115,7 +115,7 @@ echo "server {
         index index.html index.htm;
         location /{
                   auth_basic off;
-                try_files $uri $uri/ =404;
+                try_files \$uri \$uri/ =404;
 
         }
 
