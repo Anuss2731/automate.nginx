@@ -73,7 +73,7 @@ sudo touch "$SASL_FILE"
 sudo chmod 777 "$SASL_FILE"
 echo "file created (or already exists): $SASL_FILE"
 
-echo "[smtp.gmail.com]:587 $email $app_passwd" | sudo tee -a /etc/postfix/sasl/sasl_passwd > /dev/null
+echo "[smtp.gmail.com]:587 $email:$app_passwd" | sudo tee -a /etc/postfix/sasl/sasl_passwd > /dev/null
 
 sudo chmod 600 "$SASL_FILE"
 sudo postmap /etc/postfix/sasl/sasl_passwd
