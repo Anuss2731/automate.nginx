@@ -22,17 +22,26 @@ sudo apt-get install -y postfix mailutils
 echo " ...........................Postfix installed with Internet Site mode............................"
 echo " .............................Hostname set as mail name: $HOSTNAME..............................."
 
-read -p "GIVE THE EMAIL WHICH YOU WANT TO ATTACH" email
+read -p "GIVE THE EMAIL WHICH YOU WANT TO ATTACH: " email
 echo "............................................IMP:create your app passwrd form your google account manager................................... "
 echo "TO GET PASSWORD"
 echo "OPEN GOOGLE ACOOUNT MANAGER"
 echo "search Apps password and create it"
-read -p "GIVE YOUR APPS PASSWOD" app_passwd
+read -p "GIVE YOUR APPS PASSWOD: " app_passwd
 
 echo "step2:edit the postfix configration file"
 POSTFIX_CONFIG="/etc/postfix/main.cf"
 sudo chmod 777 "$POSTFIX_CONFIG"
 sudo cp "$POSTFIX_CONFIG" "${POSTFIX_CONFIG}.bak"
+
+sudo sed -i '/^relayhost *=/d' "$POSTFIX_CONFIG"
+sudo sed -i '/^myhostname *=/d' "$POSTFIX_CONFIG"
+sudo sed -i '/^smtp_sasl_password_maps *=/d' "$POSTFIX_CONFIG"
+sudo sed -i '/^smtp_sasl_auth_enable *=/d' "$POSTFIX_CONFIG"
+sudo sed -i '/^smtp_tls_security_level *=/d' "$POSTFIX_CONFIG"
+sudo sed -i '/^smtp_sasl_security_options *=/d' "$POSTFIX_CONFIG"
+
+
 sudo tee -a "$POSTFIX_CONFIG" > /dev/null <<EOL
 
 # Added by script
@@ -66,8 +75,11 @@ echo "file created (or already exists): $SASL_FILE"
 
 echo "[smtp.gmail.com]:587 $email $app_passwd" | sudo tee -a /etc/postfix/sasl/sasl_passwd > /dev/null
 
-postmap /etc/postfix/sasl/sasl_passwd
 sudo chmod 600 "$SASL_FILE"
+sudo postmap /etc/postfix/sasl/sasl_passwd
+sudo systemctl start postfix.service
+sudo systemctl status postfix.service
+
 
 echo "FOR TEST: echo "Test Mail" | mail -s "Postfix TEST" yourgmail "
 echo "YOU GET THE MAIL WITH THE NAME $(hostname)"
