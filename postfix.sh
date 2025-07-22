@@ -27,6 +27,7 @@ echo "............................................IMP:create your app passwrd fo
 echo "TO GET PASSWORD"
 echo "OPEN GOOGLE ACOOUNT MANAGER"
 echo "search Apps password and create it"
+echo "USED APPS PASSWD WITHOUT AND SPACE"
 read -p "GIVE YOUR APPS PASSWOD: " app_passwd
 
 echo "step2:edit the postfix configration file"
